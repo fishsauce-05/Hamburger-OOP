@@ -285,7 +285,7 @@ public class BurgerAppGUI extends JFrame {
         burgerChefNotes = new HashMap<>();
 
         addBurgerData("Classic Beef", "100% Beef Patty, Special Sauce, Lettuce", "8-10m", "650 Kcal", "Non-Spicy", "Wheat, Dairy", "Classic choice!");
-        addBurgerData("Spicy Chicken", "Crispy Chicken, Spicy Mayo, Pickles", "10-12m", "700 Kcal", "Hot 🌶️", "Wheat, Egg", "Adds a spicy kick!");
+        addBurgerData("Spicy Chicken", "Crispy Chicken, Spicy Mayo, Pickles", "10-12m", "700 Kcal", "Hot ", "Wheat, Egg", "Adds a spicy kick!");
         addBurgerData("BBQ Bacon", "Beef Patty, Crispy Bacon, BBQ Sauce", "10-12m", "850 Kcal", "Mild", "Wheat, Pork", "Smoky flavor!");
         addBurgerData("Fish Filet", "White Fish Filet, Tartar Sauce, Cheese", "8-10m", "550 Kcal", "Non-Spicy", "Fish, Dairy, Wheat", "Light & Tasty.");
         addBurgerData("Veggie", "Plant-based Patty, Fresh Greens, Tomato", "8-10m", "450 Kcal", "Non-Spicy", "Wheat, Soy", "Healthy option.");
@@ -328,16 +328,16 @@ public class BurgerAppGUI extends JFrame {
         for (String item : ingredients) sb.append(" • ").append(item.trim()).append("\n");
         txtDescription.setText(sb.toString());
 
-        lblPrepTime.setText("⏳ " + time);
-        lblCalories.setText("🔥 " + cal);
-        lblSpiciness.setText("🌶️ " + spicy);
+        lblPrepTime.setText(time);
+        lblCalories.setText(cal);
+        lblSpiciness.setText(spicy);
         
         if(spicy.contains("Hot")) lblSpiciness.setForeground(Color.RED);
         else if(spicy.contains("Mild")) lblSpiciness.setForeground(new Color(211, 84, 0));
         else lblSpiciness.setForeground(new Color(39, 174, 96));
         
-        lblAllergens.setText("⚠️ Contains: " + allergens);
-        lblChefNote.setText("⭐ Chef says: " + note);
+        lblAllergens.setText("Contains: " + allergens);
+        lblChefNote.setText("Chef says: " + note);
     }
 
     private JLabel createLabel(String text) {
