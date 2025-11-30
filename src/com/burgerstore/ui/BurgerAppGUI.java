@@ -216,7 +216,7 @@ public class BurgerAppGUI extends JFrame {
 
         pnlLeft.add(Box.createVerticalStrut(15));
         JButton btnAdd = new JButton("ADD TO CART");
-        btnAdd.setBackground(new Color(39, 174, 96)); btnAdd.setForeground(Color.WHITE);
+        btnAdd.setBackground(new Color(39, 174, 96)); btnAdd.setForeground(Color.BLACK);
         btnAdd.setFont(new Font("Arial", Font.BOLD, 14));
         btnAdd.setAlignmentX(Component.LEFT_ALIGNMENT);
         btnAdd.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
@@ -259,7 +259,7 @@ public class BurgerAppGUI extends JFrame {
         lblTotal.setFont(new Font("Arial", Font.BOLD, 28));
         lblTotal.setForeground(new Color(192, 57, 43));
         JButton btnCheckout = new JButton("CHECKOUT & PRINT");
-        btnCheckout.setBackground(new Color(41, 128, 185)); btnCheckout.setForeground(Color.WHITE);
+        btnCheckout.setBackground(new Color(41, 128, 185)); btnCheckout.setForeground(Color.BLACK);
         btnCheckout.setFont(new Font("Arial", Font.BOLD, 16));
         btnCheckout.setPreferredSize(new Dimension(250, 50));
         pnlFooter.add(lblTotal, BorderLayout.WEST);
