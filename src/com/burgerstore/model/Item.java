@@ -10,7 +10,7 @@ public abstract class Item {
         this.name = name;
         this.type = type;
         this.price = price;
-        this.size = "MEDIUM";
+        this.size = "MEDIUM"; // Mặc định size vừa
     }
 
     public String getName() { return name; }
@@ -18,7 +18,7 @@ public abstract class Item {
     public String getSize() { return size; }
     public void setSize(String size) { this.size = size; }
 
-    // Polymorphism: Tính giá dựa trên size
+    // Đa hình (Polymorphism): Tính giá thay đổi theo size
     public double getAdjustedPrice() {
         return switch (size.toUpperCase()) {
             case "SMALL" -> price - 0.5;

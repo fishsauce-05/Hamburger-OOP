@@ -1,0 +1,35 @@
+Deluxe Chicken Royale:15
+Coleslaw Salad:30
+Fish Filet Burger:17
+Pepsi:98
+Cheese:92
+Coca Cola:94
+Mozzarella Sticks:19
+Bacon:45
+Tomato:83
+Strawberry Milkshake:20
+Apple Pie:20
+Peach Tea:30
+Chicken Nuggets:39
+BBQ Bacon Burger:48
+Lettuce:95
+Deluxe Truffle Mushroom:5
+French Fries:83
+Mountain Dew:24
+Spicy Chicken Burger:50
+Sprite:98
+Fanta Orange:49
+Classic Beef Burger:2
+Iced Coffee:30
+Veggie Burger:500
+Jalapenos:30
+Grilled Onion:8
+Mayo:172
+Deluxe Ultimate Stack:13
+Fried Egg:12
+Evening Deluxe Burger:20
+Morning Deluxe Burger:20
+Pickles:47
+Chocolate Milkshake:20
+BBQ Sauce:199
+Onion Rings:47

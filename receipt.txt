@@ -1,12 +1,14 @@
 
-============= BURGER STORE RECEIPT =============
-BURGER: Spicy Chicken                  $5.50
- + Extra: Cheese                        $1.00
- + Extra: Bacon                         $1.50
- + Extra: Lettuce                       $0.50
-DRINK:  Coke (SMALL)                   $1.00
-SIDE:   French Fries                   $2.50
-------------------------------------------------
-TOTAL DUE:                               $12.00
-================================================
-       Thank you for choosing Burger Store!     
+==============================================
+             BURGER STORE RECEIPT             
+==============================================
+BURGER: Classic Beef Burger          $5.00
+ + Extra: Cheese                      $1.00
+ + Extra: Fried Egg                   $1.00
+ + Extra: BBQ Sauce                   $0.30
+DRINK:  Coca Cola (MEDIUM)           $2.00
+SIDE:   Onion Rings                  $3.00
+----------------------------------------------
+TOTAL DUE:                             $12.30
+==============================================
+        Thank you & See you again!            

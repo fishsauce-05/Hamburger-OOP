@@ -1,3 +1,11 @@
+# ============================================================
+# UPDATE GUI: ADD QUANTITY SELECTOR & PREP TIME
+# ============================================================
+
+cd BurgerStoreSystem
+
+echo "Updating BurgerAppGUI with Quantity & Prep Time..."
+cat << 'EOF' > src/com/burgerstore/ui/BurgerAppGUI.java
 package com.burgerstore.ui;
 
 import com.burgerstore.model.*;
@@ -21,21 +29,14 @@ public class BurgerAppGUI extends JFrame {
     private DefaultListModel<MealOrder> cartModel;
     private JList<MealOrder> listCart;
     private InventoryManager inventory;
-    
-    // Data Maps
     private Map<String, String> burgerDescriptions;
-    private Map<String, String> burgerPrepTimes; 
-    private Map<String, String> burgerCalories;
-    private Map<String, String> burgerSpiciness;
-    private Map<String, String> burgerAllergens;
-    private Map<String, String> burgerChefNotes;
+    private Map<String, String> burgerPrepTimes; // Map lưu thời gian chuẩn bị
     
     // UI Components
     private JComboBox<String> cmbBurger, cmbDrink, cmbDrinkSize, cmbSide;
     private JTextArea txtDescription, txtNotes;
-    private JSpinner spnQuantity;
-    private JLabel lblPrepTime, lblCalories, lblSpiciness; 
-    private JLabel lblAllergens, lblChefNote;
+    private JSpinner spnQuantity; // Chọn số lượng
+    private JLabel lblPrepTime;   // Hiển thị thời gian
     private List<JCheckBox> toppingCheckboxes;
     private JLabel lblTotal;
     
@@ -66,10 +67,11 @@ public class BurgerAppGUI extends JFrame {
     public BurgerAppGUI() {
         inventory = InventoryManager.getInstance();
         cartModel = new DefaultListModel<>();
-        initAllData(); 
+        initDescriptions();
+        initPrepTimes(); // Khởi tạo dữ liệu thời gian
 
         setTitle("Burger Store - POS System");
-        setSize(1150, 850);
+        setSize(1150, 800); // Tăng chiều cao một chút
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout(10, 10));
@@ -98,7 +100,7 @@ public class BurgerAppGUI extends JFrame {
         cmbBurger.addActionListener(e -> { updateDescription(); validateToppingsOnChange(); });
         pnlLeft.add(cmbBurger);
         
-        txtDescription = new JTextArea(4, 20); // Giữ nguyên kích thước để hiện Ingredients
+        txtDescription = new JTextArea(4, 20);
         txtDescription.setFont(new Font("Segoe UI", Font.PLAIN, 12));
         txtDescription.setForeground(new Color(80, 80, 80));
         txtDescription.setEditable(false);
@@ -107,64 +109,34 @@ public class BurgerAppGUI extends JFrame {
         txtDescription.setAlignmentX(Component.LEFT_ALIGNMENT);
         pnlLeft.add(txtDescription);
 
-        // --- PART A: TEXT INFO (Allergens & Chef Note) ---
-        // Đặt cái này LÊN TRÊN thanh Quantity để lấp khoảng trống
-        JPanel pnlExtraInfo = new JPanel(new GridLayout(2, 1, 0, 5));
-        pnlExtraInfo.setAlignmentX(Component.LEFT_ALIGNMENT);
-        pnlExtraInfo.setMaximumSize(new Dimension(Integer.MAX_VALUE, 45));
-        pnlExtraInfo.setBackground(new Color(245, 245, 245)); // Nền xám rất nhẹ cho khác biệt
-        pnlExtraInfo.setBorder(new EmptyBorder(5, 10, 5, 5));
-
-        // 1. Allergens
-        lblAllergens = new JLabel("⚠️ Contains: Wheat, Dairy");
-        lblAllergens.setFont(new Font("Segoe UI", Font.PLAIN, 11));
-        lblAllergens.setForeground(new Color(100, 100, 100));
-        pnlExtraInfo.add(lblAllergens);
-
-        // 2. Chef Note
-        lblChefNote = new JLabel("⭐ Chef says: Best paired with Coke!");
-        lblChefNote.setFont(new Font("Segoe UI", Font.ITALIC, 11));
-        lblChefNote.setForeground(new Color(0, 102, 204));
-        pnlExtraInfo.add(lblChefNote);
-
-        pnlLeft.add(pnlExtraInfo);
-        
-        // --- PART B: FUNCTIONAL BAR (Quantity, Time, Cal) ---
-        // Đặt cái này XUỐNG DƯỚI cùng của Section 1
-        JPanel pnlInfo = new JPanel(new FlowLayout(FlowLayout.LEFT, 15, 6));
+        // --- MỚI: INFO PANEL (QUANTITY & TIME) ---
+        // Nằm giữa Burger Desc và Extras
+        JPanel pnlInfo = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
         pnlInfo.setAlignmentX(Component.LEFT_ALIGNMENT);
-        pnlInfo.setMaximumSize(new Dimension(Integer.MAX_VALUE, 45));
-        pnlInfo.setBackground(new Color(235, 245, 251)); // Xanh nhạt
-        pnlInfo.setBorder(BorderFactory.createMatteBorder(1, 0, 1, 0, new Color(200, 200, 200)));
+        pnlInfo.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
+        pnlInfo.setBackground(new Color(240, 248, 255)); // Màu nền nhẹ cho nổi bật
+        pnlInfo.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
-        JPanel pnlQty = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
-        pnlQty.setOpaque(false);
-        pnlQty.add(new JLabel("Qty:"));
-        spnQuantity = new JSpinner(new SpinnerNumberModel(1, 1, 50, 1));
+        // 1. Quantity Selector
+        pnlInfo.add(new JLabel("Quantity: "));
+        spnQuantity = new JSpinner(new SpinnerNumberModel(1, 1, 50, 1)); // Min 1, Max 50, Step 1
         JComponent editor = spnQuantity.getEditor();
         JFormattedTextField tf = ((JSpinner.DefaultEditor) editor).getTextField();
-        tf.setColumns(2);
-        pnlQty.add(spnQuantity);
-        pnlInfo.add(pnlQty);
+        tf.setColumns(3); // Độ rộng
+        pnlInfo.add(spnQuantity);
 
-        lblPrepTime = new JLabel("⏳ 10m");
+        pnlInfo.add(Box.createHorizontalStrut(25)); // Khoảng cách
+
+        // 2. Prep Time Display
+        lblPrepTime = new JLabel("⏳ Est. Time: 10 mins");
         lblPrepTime.setFont(new Font("Segoe UI", Font.BOLD, 12));
-        lblPrepTime.setForeground(new Color(211, 84, 0)); 
+        lblPrepTime.setForeground(new Color(211, 84, 0)); // Màu cam đất
         pnlInfo.add(lblPrepTime);
 
-        lblCalories = new JLabel("🔥 650 kcal");
-        lblCalories.setFont(new Font("Segoe UI", Font.BOLD, 12));
-        lblCalories.setForeground(new Color(192, 57, 43)); 
-        pnlInfo.add(lblCalories);
-
-        lblSpiciness = new JLabel("🌶️ Mild");
-        lblSpiciness.setFont(new Font("Segoe UI", Font.BOLD, 12));
-        lblSpiciness.setForeground(new Color(39, 174, 96));
-        pnlInfo.add(lblSpiciness);
-
         pnlLeft.add(pnlInfo);
+        // ------------------------------------------
         
-        pnlLeft.add(Box.createVerticalStrut(15)); // Khoảng cách tới Section 2
+        pnlLeft.add(Box.createVerticalStrut(10));
 
         // SECTION 2: EXTRAS
         pnlLeft.add(createLabel("2. Extras"));
@@ -192,11 +164,7 @@ public class BurgerAppGUI extends JFrame {
         pnlDrinkRow.add(Box.createHorizontalStrut(10));
         pnlDrinkRow.add(new JLabel("Size: ")); 
         cmbDrinkSize = new JComboBox<>(DRINK_SIZES); 
-        cmbDrinkSize.setSelectedIndex(1); cmbDrinkSize.setEnabled(false); 
-        cmbDrink.addActionListener(e -> {
-            String selected = (String) cmbDrink.getSelectedItem();
-            cmbDrinkSize.setEnabled(!selected.contains("No Drink"));
-        });
+        cmbDrinkSize.setSelectedIndex(1); // Default Medium
         pnlDrinkRow.add(cmbDrinkSize);
         pnlLeft.add(pnlDrinkRow);
         
@@ -226,9 +194,10 @@ public class BurgerAppGUI extends JFrame {
         btnAdd.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
         pnlLeft.add(btnAdd);
 
-        // RIGHT PANEL
+        // RIGHT PANEL (CART)
         JPanel pnlRight = new JPanel(new BorderLayout());
         pnlRight.setBorder(BorderFactory.createTitledBorder("Current Order Cart"));
+        
         listCart = new JList<>(cartModel);
         listCart.setFont(new Font("Monospaced", Font.PLAIN, 14));
         pnlRight.add(new JScrollPane(listCart), BorderLayout.CENTER);
@@ -247,13 +216,16 @@ public class BurgerAppGUI extends JFrame {
         JPanel pnlFooter = new JPanel(new BorderLayout());
         pnlFooter.setBorder(new EmptyBorder(15, 20, 15, 20));
         pnlFooter.setBackground(new Color(236, 240, 241));
+        
         lblTotal = new JLabel("TOTAL: $0.00");
         lblTotal.setFont(new Font("Arial", Font.BOLD, 28));
         lblTotal.setForeground(new Color(192, 57, 43));
+        
         JButton btnCheckout = new JButton("CHECKOUT & PRINT");
         btnCheckout.setBackground(new Color(41, 128, 185)); btnCheckout.setForeground(Color.WHITE);
         btnCheckout.setFont(new Font("Arial", Font.BOLD, 16));
         btnCheckout.setPreferredSize(new Dimension(250, 50));
+
         pnlFooter.add(lblTotal, BorderLayout.WEST);
         pnlFooter.add(btnCheckout, BorderLayout.EAST);
         add(pnlFooter, BorderLayout.SOUTH);
@@ -267,80 +239,7 @@ public class BurgerAppGUI extends JFrame {
         updateDescription();
     }
 
-    // --- INIT DATA ---
-    private void initAllData() {
-        burgerDescriptions = new HashMap<>();
-        burgerPrepTimes = new HashMap<>();
-        burgerCalories = new HashMap<>();
-        burgerSpiciness = new HashMap<>();
-        burgerAllergens = new HashMap<>();
-        burgerChefNotes = new HashMap<>();
-
-        addBurgerData("Classic Beef", "100% Beef Patty, Special Sauce, Lettuce", "8-10m", "650 Kcal", "Non-Spicy", "Wheat, Dairy", "Classic choice!");
-        addBurgerData("Spicy Chicken", "Crispy Chicken, Spicy Mayo, Pickles", "10-12m", "700 Kcal", "Hot 🌶️", "Wheat, Egg", "Adds a spicy kick!");
-        addBurgerData("BBQ Bacon", "Beef Patty, Crispy Bacon, BBQ Sauce", "10-12m", "850 Kcal", "Mild", "Wheat, Pork", "Smoky flavor!");
-        addBurgerData("Fish Filet", "White Fish Filet, Tartar Sauce, Cheese", "8-10m", "550 Kcal", "Non-Spicy", "Fish, Dairy, Wheat", "Light & Tasty.");
-        addBurgerData("Veggie", "Plant-based Patty, Fresh Greens, Tomato", "8-10m", "450 Kcal", "Non-Spicy", "Wheat, Soy", "Healthy option.");
-        addBurgerData("Morning", "Beef Patty, Fried Egg, Hashbrown, Coffee", "12-15m", "900 Kcal", "Non-Spicy", "Egg, Wheat", "Great start!");
-        addBurgerData("Evening", "Double Beef, Cheddar Cheese, Rings", "15-18m", "1100 Kcal", "Mild", "Dairy, Wheat", "For big appetite.");
-        addBurgerData("Ultimate", "Triple Patty, Triple Cheese, Bacon", "15-20m", "1500 Kcal", "Mild", "Dairy, Pork, Wheat", "The Boss Burger.");
-        addBurgerData("Royale", "Premium Chicken Breast, Swiss Cheese", "12-15m", "750 Kcal", "Non-Spicy", "Dairy, Wheat", "Elegant taste.");
-        addBurgerData("Truffle", "Beef Patty, Truffle Mayo, Mushrooms", "15-18m", "800 Kcal", "Non-Spicy", "Dairy, Egg", "Rich aroma.");
-    }
-
-    private void addBurgerData(String key, String desc, String time, String cal, String spicy, String allergens, String note) {
-        burgerDescriptions.put(key, desc);
-        burgerPrepTimes.put(key, time);
-        burgerCalories.put(key, cal);
-        burgerSpiciness.put(key, spicy);
-        burgerAllergens.put(key, allergens);
-        burgerChefNotes.put(key, note);
-    }
-
-    private void updateDescription() {
-        String selected = (String) cmbBurger.getSelectedItem();
-        String rawDesc = "Standard Burger";
-        String time = "10m"; String cal = "600 Kcal"; String spicy = "Non-Spicy";
-        String allergens = "None"; String note = "Enjoy!";
-
-        for (String key : burgerDescriptions.keySet()) {
-            if (selected.contains(key)) {
-                rawDesc = burgerDescriptions.get(key);
-                time = burgerPrepTimes.get(key);
-                cal = burgerCalories.get(key);
-                spicy = burgerSpiciness.get(key);
-                allergens = burgerAllergens.get(key);
-                note = burgerChefNotes.get(key);
-                break;
-            }
-        }
-        
-        String[] ingredients = rawDesc.split(",");
-        StringBuilder sb = new StringBuilder();
-        for (String item : ingredients) sb.append(" • ").append(item.trim()).append("\n");
-        txtDescription.setText(sb.toString());
-
-        lblPrepTime.setText("⏳ " + time);
-        lblCalories.setText("🔥 " + cal);
-        lblSpiciness.setText("🌶️ " + spicy);
-        
-        if(spicy.contains("Hot")) lblSpiciness.setForeground(Color.RED);
-        else if(spicy.contains("Mild")) lblSpiciness.setForeground(new Color(211, 84, 0));
-        else lblSpiciness.setForeground(new Color(39, 174, 96));
-        
-        lblAllergens.setText("⚠️ Contains: " + allergens);
-        lblChefNote.setText("⭐ Chef says: " + note);
-    }
-
-    // --- OTHER METHODS ---
-    private JLabel createLabel(String text) {
-        JLabel l = new JLabel(text);
-        l.setFont(new Font("Segoe UI", Font.BOLD, 14));
-        l.setForeground(new Color(44, 62, 80));
-        l.setBorder(new EmptyBorder(15, 0, 5, 0));
-        l.setAlignmentX(Component.LEFT_ALIGNMENT);
-        return l;
-    }
+    // --- LOGIC METHODS ---
 
     private void checkToppingLimit(JCheckBox changedBox) {
         if (!changedBox.isSelected()) return;
@@ -366,27 +265,103 @@ public class BurgerAppGUI extends JFrame {
         }
     }
 
+    private void initDescriptions() {
+        burgerDescriptions = new HashMap<>();
+        burgerDescriptions.put("Classic Beef", "100% Beef Patty, Special Sauce, Lettuce");
+        burgerDescriptions.put("Spicy Chicken", "Crispy Chicken, Spicy Mayo, Pickles");
+        burgerDescriptions.put("BBQ Bacon", "Beef Patty, Crispy Bacon, BBQ Sauce, Onion");
+        burgerDescriptions.put("Fish Filet", "White Fish Filet, Tartar Sauce, Cheese");
+        burgerDescriptions.put("Veggie", "Plant-based Patty, Fresh Greens, Tomato");
+        burgerDescriptions.put("Morning", "Beef Patty, Fried Egg, Hashbrown, Coffee included");
+        burgerDescriptions.put("Evening", "Double Beef, Cheddar Cheese, Onion Rings");
+        burgerDescriptions.put("Ultimate", "Triple Patty, Triple Cheese, Bacon, All Sauces");
+        burgerDescriptions.put("Royale", "Premium Chicken Breast, Swiss Cheese, Ham");
+        burgerDescriptions.put("Truffle", "Beef Patty, Truffle Mayo, Sautéed Mushrooms");
+    }
+
+    // Mới: Map thời gian
+    private void initPrepTimes() {
+        burgerPrepTimes = new HashMap<>();
+        // Mặc định cho Deluxe lâu hơn
+        burgerPrepTimes.put("Classic Beef", "8-10 mins");
+        burgerPrepTimes.put("Spicy Chicken", "10-12 mins");
+        burgerPrepTimes.put("BBQ Bacon", "10-12 mins");
+        burgerPrepTimes.put("Fish Filet", "8-10 mins");
+        burgerPrepTimes.put("Veggie", "8-10 mins");
+        // Deluxe items
+        burgerPrepTimes.put("Morning", "12-15 mins");
+        burgerPrepTimes.put("Evening", "15-18 mins");
+        burgerPrepTimes.put("Ultimate", "15-20 mins");
+        burgerPrepTimes.put("Royale", "12-15 mins");
+        burgerPrepTimes.put("Truffle", "15-18 mins");
+    }
+
+    private void updateDescription() {
+        String selected = (String) cmbBurger.getSelectedItem();
+        String rawDesc = "Standard Burger Base";
+        String time = "10 mins"; // Default
+
+        for (String key : burgerDescriptions.keySet()) {
+            if (selected.contains(key)) {
+                rawDesc = burgerDescriptions.get(key);
+                time = burgerPrepTimes.getOrDefault(key, "10 mins");
+                break;
+            }
+        }
+        String[] ingredients = rawDesc.split(",");
+        StringBuilder sb = new StringBuilder();
+        for (String item : ingredients) sb.append(" • ").append(item.trim()).append("\n");
+        txtDescription.setText(sb.toString());
+
+        // Cập nhật Label Time
+        lblPrepTime.setText("⏳ Est. Time: " + time);
+    }
+
+    private JLabel createLabel(String text) {
+        JLabel l = new JLabel(text);
+        l.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        l.setForeground(new Color(44, 62, 80));
+        l.setBorder(new EmptyBorder(15, 0, 5, 0));
+        l.setAlignmentX(Component.LEFT_ALIGNMENT);
+        return l;
+    }
+
     private void addToCart() {
         try {
+            // Lấy số lượng từ Spinner
             int qty = (Integer) spnQuantity.getValue();
+            
+            // Loop add (Lặp lại việc add n lần)
+            // Lưu ý: createOrderFromInput đã bao gồm việc trừ kho rồi.
+            // Nên gọi n lần sẽ trừ n lần kho.
             for (int i = 0; i < qty; i++) {
                 MealOrder order = createOrderFromInput();
                 cartModel.addElement(order);
             }
+            
             resetForm();
             updateTotal();
-            if (qty > 1) JOptionPane.showMessageDialog(this, "Added " + qty + " items to cart!");
+            
+            // Nếu thêm nhiều món, hiển thị thông báo tổng
+            if (qty > 1) {
+                JOptionPane.showMessageDialog(this, "Added " + qty + " items to cart!");
+            }
+            
         } catch (Exception ex) {
+            // Nếu lỗi giữa chừng (ví dụ cái thứ 3 bị hết hàng), sẽ dừng lại và báo lỗi.
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Error stopped at item", JOptionPane.ERROR_MESSAGE);
-            updateTotal(); 
+            updateTotal(); // Cập nhật lại giá tiền những món đã add được
         }
     }
 
     private MealOrder createOrderFromInput() throws Exception {
+        // 1. BURGER
         String rawBurger = (String) cmbBurger.getSelectedItem();
         String bName = rawBurger.split("\\(")[0].trim();
         double bPrice = Double.parseDouble(rawBurger.split("\\$")[1].replace(")", ""));
+        
         inventory.checkStock(bName); 
+
         Burger burger;
         if (bName.contains("Morning")) {
             MorningBurger mb = new MorningBurger(); mb.validateTime(); burger = mb;
@@ -397,6 +372,8 @@ public class BurgerAppGUI extends JFrame {
         } else {
             burger = new Burger(bName, bPrice);
         }
+
+        // 2. TOPPINGS
         for (JCheckBox cb : toppingCheckboxes) {
             if (cb.isSelected()) {
                 String rawTop = cb.getText();
@@ -406,9 +383,12 @@ public class BurgerAppGUI extends JFrame {
                 burger.addTopping(new SideItem(tName, tPrice));
             }
         }
+
+        // 3. DRINK
         String rawDrink = (String) cmbDrink.getSelectedItem();
         String dName = rawDrink.split("\\(")[0].trim();
         Drink drink;
+        
         if (dName.contains("No Drink")) {
             drink = new Drink("No Drink", "NONE", 0.0);
         } else {
@@ -417,20 +397,27 @@ public class BurgerAppGUI extends JFrame {
             String cleanSize = rawSize.split(" ")[0]; 
             drink = new Drink(dName, cleanSize, 2.0);
         }
+
+        // 4. SIDE
         String rawSide = (String) cmbSide.getSelectedItem();
         String sName = rawSide.split("\\(")[0].trim();
         SideItem side;
+        
         if (sName.contains("No Side")) {
             side = new SideItem("No Side Item", 0.0);
         } else {
             inventory.checkStock(sName);
             side = new SideItem(sName, Double.parseDouble(rawSide.split("\\$")[1].replace(")", "")));
         }
+
+        // 5. REDUCE STOCK
         inventory.reduceStock(bName);
         for (Item t : burger.getToppings()) inventory.reduceStock(t.getName());
         if (!dName.contains("No Drink")) inventory.reduceStock(dName);
         if (!sName.contains("No Side")) inventory.reduceStock(sName);
+        
         inventory.saveInventory();
+
         String notes = txtNotes.getText();
         return new MealOrder(burger, drink, side, notes);
     }
@@ -441,8 +428,14 @@ public class BurgerAppGUI extends JFrame {
             MealOrder order = cartModel.get(index);
             inventory.restoreStock(order.getBurger().getName());
             for(Item t : order.getBurger().getToppings()) inventory.restoreStock(t.getName());
-            if (!order.getDrink().getName().equals("No Drink")) inventory.restoreStock(order.getDrink().getName());
-            if (!order.getSide().getName().equals("No Side Item")) inventory.restoreStock(order.getSide().getName());
+            
+            if (!order.getDrink().getName().equals("No Drink")) {
+                inventory.restoreStock(order.getDrink().getName());
+            }
+            if (!order.getSide().getName().equals("No Side Item")) {
+                inventory.restoreStock(order.getSide().getName());
+            }
+            
             inventory.saveInventory();
             cartModel.remove(index);
             updateTotal();
@@ -453,16 +446,27 @@ public class BurgerAppGUI extends JFrame {
         int index = listCart.getSelectedIndex();
         if (index >= 0) {
             MealOrder original = cartModel.get(index);
+            
             try {
                 inventory.checkStock(original.getBurger().getName());
                 for (Item t : original.getBurger().getToppings()) inventory.checkStock(t.getName());
-                if (!original.getDrink().getName().equals("No Drink")) inventory.checkStock(original.getDrink().getName());
-                if (!original.getSide().getName().equals("No Side Item")) inventory.checkStock(original.getSide().getName());
+                
+                if (!original.getDrink().getName().equals("No Drink")) {
+                    inventory.checkStock(original.getDrink().getName());
+                }
+                if (!original.getSide().getName().equals("No Side Item")) {
+                    inventory.checkStock(original.getSide().getName());
+                }
 
                 inventory.reduceStock(original.getBurger().getName());
                 for (Item t : original.getBurger().getToppings()) inventory.reduceStock(t.getName());
-                if (!original.getDrink().getName().equals("No Drink")) inventory.reduceStock(original.getDrink().getName());
-                if (!original.getSide().getName().equals("No Side Item")) inventory.reduceStock(original.getSide().getName());
+                
+                if (!original.getDrink().getName().equals("No Drink")) {
+                    inventory.reduceStock(original.getDrink().getName());
+                }
+                if (!original.getSide().getName().equals("No Side Item")) {
+                    inventory.reduceStock(original.getSide().getName());
+                }
                 inventory.saveInventory();
 
                 Burger newBurger;
@@ -480,11 +484,13 @@ public class BurgerAppGUI extends JFrame {
 
                 Drink newDrink = new Drink(original.getDrink().getName(), original.getDrink().getSize(), 2.0);
                 if (original.getDrink().getName().equals("No Drink")) newDrink = new Drink("No Drink", "NONE", 0.0);
+                
                 SideItem newSide = new SideItem(original.getSide().getName(), original.getSide().getBasePrice());
                 
                 MealOrder duplicateOrder = new MealOrder(newBurger, newDrink, newSide, original.getNotes());
                 cartModel.addElement(duplicateOrder);
                 updateTotal();
+                
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(this, "Cannot Duplicate: " + ex.getMessage(), "Stock Error", JOptionPane.ERROR_MESSAGE);
             }
@@ -520,10 +526,9 @@ public class BurgerAppGUI extends JFrame {
         for(JCheckBox cb : toppingCheckboxes) cb.setSelected(false);
         cmbDrink.setSelectedIndex(0);
         cmbDrinkSize.setSelectedIndex(1);
-        cmbDrinkSize.setEnabled(false);
         cmbSide.setSelectedIndex(0);
         txtNotes.setText("");
-        spnQuantity.setValue(1);
+        spnQuantity.setValue(1); // Reset số lượng về 1
     }
 
     private void updateTotal() {
@@ -537,3 +542,6 @@ public class BurgerAppGUI extends JFrame {
         SwingUtilities.invokeLater(() -> new BurgerAppGUI().setVisible(true));
     }
 }
+EOF
+
+echo "Quantity & Prep Time Added! Run 'run.bat'."

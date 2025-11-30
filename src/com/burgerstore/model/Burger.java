@@ -11,14 +11,14 @@ public class Burger extends Item {
     public Burger(String name, double price) {
         super(name, "BURGER", price);
         this.toppings = new ArrayList<>();
-        this.maxToppings = 3; // Mặc định: tối đa 3 topping
+        this.maxToppings = 3; // Burger thường tối đa 3 topping
     }
 
     public void addTopping(Item topping) throws ToppingLimitException {
         if (toppings.size() < maxToppings) {
             toppings.add(topping);
         } else {
-            throw new ToppingLimitException("Limit reached! Standard burgers allow only " + maxToppings + " toppings.");
+            throw new ToppingLimitException("Loại burger này chỉ cho phép tối đa " + maxToppings + " topping!");
         }
     }
 

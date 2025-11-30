@@ -1,0 +1,74 @@
+========== FINAL RECEIPT ==========
+ITEM #1
+>> Classic Beef Burger            $5.00
+   + Fried Egg                    $1.00
+   + Grilled Onion                $0.50
+   + Drink: No Drink [NONE]       $0.00
+   + Side:  French Fries          $2.50
+   SUBTOTAL:                          $9.00
+-----------------------------------
+ITEM #2
+>> Classic Beef Burger            $5.00
+   + Fried Egg                    $1.00
+   + Grilled Onion                $0.50
+   + Drink: No Drink [NONE]       $0.00
+   + Side:  French Fries          $2.50
+   SUBTOTAL:                          $9.00
+-----------------------------------
+ITEM #3
+>> Classic Beef Burger            $5.00
+   + Fried Egg                    $1.00
+   + Grilled Onion                $0.50
+   + Drink: No Drink [NONE]       $0.00
+   + Side:  French Fries          $2.50
+   SUBTOTAL:                          $9.00
+-----------------------------------
+ITEM #4
+>> Classic Beef Burger            $5.00
+   + Fried Egg                    $1.00
+   + Grilled Onion                $0.50
+   + Drink: No Drink [NONE]       $0.00
+   + Side:  French Fries          $2.50
+   SUBTOTAL:                          $9.00
+-----------------------------------
+ITEM #5
+>> Classic Beef Burger            $5.00
+   + Fried Egg                    $1.00
+   + Grilled Onion                $0.50
+   + Drink: No Drink [NONE]       $0.00
+   + Side:  French Fries          $2.50
+   SUBTOTAL:                          $9.00
+-----------------------------------
+ITEM #6
+>> Classic Beef Burger            $5.00
+   + Fried Egg                    $1.00
+   + Grilled Onion                $0.50
+   + Drink: No Drink [NONE]       $0.00
+   + Side:  French Fries          $2.50
+   SUBTOTAL:                          $9.00
+-----------------------------------
+ITEM #7
+>> Classic Beef Burger            $5.00
+   + Fried Egg                    $1.00
+   + Grilled Onion                $0.50
+   + Drink: No Drink [NONE]       $0.00
+   + Side:  French Fries          $2.50
+   SUBTOTAL:                          $9.00
+-----------------------------------
+ITEM #8
+>> Classic Beef Burger            $5.00
+   + Fried Egg                    $1.00
+   + Grilled Onion                $0.50
+   + Drink: No Drink [NONE]       $0.00
+   + Side:  French Fries          $2.50
+   SUBTOTAL:                          $9.00
+-----------------------------------
+ITEM #9
+>> Classic Beef Burger            $5.00
+   + Fried Egg                    $1.00
+   + Grilled Onion                $0.50
+   + Drink: No Drink [NONE]       $0.00
+   + Side:  French Fries          $2.50
+   SUBTOTAL:                          $9.00
+-----------------------------------
+GRAND TOTAL: $81.00
