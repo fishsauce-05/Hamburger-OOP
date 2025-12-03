@@ -69,7 +69,7 @@ public class BurgerAppGUI extends JFrame {
         initAllData(); 
 
         setTitle("Burger Store - POS System");
-        setSize(1150, 850);
+        setSize(1150, 800); // Kích thước cửa sổ
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout(10, 10));
@@ -84,7 +84,7 @@ public class BurgerAppGUI extends JFrame {
         pnlHeader.add(lblTitle);
         add(pnlHeader, BorderLayout.NORTH);
 
-        // --- SPLIT PANE ---
+        // --- LEFT PANEL (INPUT) ---
         JPanel pnlLeft = new JPanel();
         pnlLeft.setLayout(new BoxLayout(pnlLeft, BoxLayout.Y_AXIS));
         pnlLeft.setBorder(new EmptyBorder(10, 20, 10, 20));
@@ -98,7 +98,7 @@ public class BurgerAppGUI extends JFrame {
         cmbBurger.addActionListener(e -> { updateDescription(); validateToppingsOnChange(); });
         pnlLeft.add(cmbBurger);
         
-        txtDescription = new JTextArea(4, 20); // Giữ nguyên kích thước để hiện Ingredients
+        txtDescription = new JTextArea(4, 20); 
         txtDescription.setFont(new Font("Segoe UI", Font.PLAIN, 12));
         txtDescription.setForeground(new Color(80, 80, 80));
         txtDescription.setEditable(false);
@@ -108,20 +108,17 @@ public class BurgerAppGUI extends JFrame {
         pnlLeft.add(txtDescription);
 
         // --- PART A: TEXT INFO (Allergens & Chef Note) ---
-        // Đặt cái này LÊN TRÊN thanh Quantity để lấp khoảng trống
         JPanel pnlExtraInfo = new JPanel(new GridLayout(2, 1, 0, 5));
         pnlExtraInfo.setAlignmentX(Component.LEFT_ALIGNMENT);
         pnlExtraInfo.setMaximumSize(new Dimension(Integer.MAX_VALUE, 45));
-        pnlExtraInfo.setBackground(new Color(245, 245, 245)); // Nền xám rất nhẹ cho khác biệt
+        pnlExtraInfo.setBackground(new Color(245, 245, 245)); 
         pnlExtraInfo.setBorder(new EmptyBorder(5, 10, 5, 5));
 
-        // 1. Allergens
         lblAllergens = new JLabel("⚠️ Contains: Wheat, Dairy");
         lblAllergens.setFont(new Font("Segoe UI", Font.PLAIN, 11));
         lblAllergens.setForeground(new Color(100, 100, 100));
         pnlExtraInfo.add(lblAllergens);
 
-        // 2. Chef Note
         lblChefNote = new JLabel("⭐ Chef says: Best paired with Coke!");
         lblChefNote.setFont(new Font("Segoe UI", Font.ITALIC, 11));
         lblChefNote.setForeground(new Color(0, 102, 204));
@@ -130,11 +127,10 @@ public class BurgerAppGUI extends JFrame {
         pnlLeft.add(pnlExtraInfo);
         
         // --- PART B: FUNCTIONAL BAR (Quantity, Time, Cal) ---
-        // Đặt cái này XUỐNG DƯỚI cùng của Section 1
         JPanel pnlInfo = new JPanel(new FlowLayout(FlowLayout.LEFT, 15, 6));
         pnlInfo.setAlignmentX(Component.LEFT_ALIGNMENT);
         pnlInfo.setMaximumSize(new Dimension(Integer.MAX_VALUE, 45));
-        pnlInfo.setBackground(new Color(235, 245, 251)); // Xanh nhạt
+        pnlInfo.setBackground(new Color(235, 245, 251)); 
         pnlInfo.setBorder(BorderFactory.createMatteBorder(1, 0, 1, 0, new Color(200, 200, 200)));
 
         JPanel pnlQty = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
@@ -164,7 +160,7 @@ public class BurgerAppGUI extends JFrame {
 
         pnlLeft.add(pnlInfo);
         
-        pnlLeft.add(Box.createVerticalStrut(15)); // Khoảng cách tới Section 2
+        pnlLeft.add(Box.createVerticalStrut(15)); 
 
         // SECTION 2: EXTRAS
         pnlLeft.add(createLabel("2. Extras"));
@@ -225,6 +221,17 @@ public class BurgerAppGUI extends JFrame {
         btnAdd.setAlignmentX(Component.LEFT_ALIGNMENT);
         btnAdd.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
         pnlLeft.add(btnAdd);
+        
+        // Thêm khoảng trắng cuối cùng để scroll đẹp hơn
+        pnlLeft.add(Box.createVerticalStrut(20));
+
+        // --- SPLIT PANE & SCROLL ---
+        
+        // BỌC CỘT TRÁI VÀO SCROLL PANE
+        JScrollPane scrollLeft = new JScrollPane(pnlLeft);
+        scrollLeft.setBorder(BorderFactory.createEmptyBorder()); // Bỏ viền cho đẹp
+        scrollLeft.getVerticalScrollBar().setUnitIncrement(16); // Tăng tốc độ cuộn chuột
+        scrollLeft.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER); // Chỉ cuộn dọc
 
         // RIGHT PANEL
         JPanel pnlRight = new JPanel(new BorderLayout());
@@ -239,8 +246,9 @@ public class BurgerAppGUI extends JFrame {
         pnlCartActions.add(btnRemove); pnlCartActions.add(btnDuplicate);
         pnlRight.add(pnlCartActions, BorderLayout.SOUTH);
 
-        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, pnlLeft, pnlRight);
-        splitPane.setDividerLocation(500);
+        // Thay pnlLeft bằng scrollLeft trong SplitPane
+        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, scrollLeft, pnlRight);
+        splitPane.setDividerLocation(520); // Điều chỉnh vị trí chia đôi một chút
         add(splitPane, BorderLayout.CENTER);
 
         // FOOTER
@@ -267,7 +275,7 @@ public class BurgerAppGUI extends JFrame {
         updateDescription();
     }
 
-    // --- INIT DATA ---
+    // --- INIT DATA & LOGIC (GIỮ NGUYÊN) ---
     private void initAllData() {
         burgerDescriptions = new HashMap<>();
         burgerPrepTimes = new HashMap<>();
@@ -284,7 +292,7 @@ public class BurgerAppGUI extends JFrame {
         addBurgerData("Morning", "Beef Patty, Fried Egg, Hashbrown, Coffee", "12-15m", "900 Kcal", "Non-Spicy", "Egg, Wheat", "Great start!");
         addBurgerData("Evening", "Double Beef, Cheddar Cheese, Rings", "15-18m", "1100 Kcal", "Mild", "Dairy, Wheat", "For big appetite.");
         addBurgerData("Ultimate", "Triple Patty, Triple Cheese, Bacon", "15-20m", "1500 Kcal", "Mild", "Dairy, Pork, Wheat", "The Boss Burger.");
-        addBurgerData("Royale", "Premium Chicken Breast, Swiss Cheese", "12-15m", "750 Kcal", "Non-Spicy", "Dairy, Wheat", "Elegant taste.");
+        addBurgerData("Royale", "Premium Chicken Breast, Swiss Cheese, Ham", "12-15m", "750 Kcal", "Non-Spicy", "Dairy, Wheat", "Elegant taste.");
         addBurgerData("Truffle", "Beef Patty, Truffle Mayo, Mushrooms", "15-18m", "800 Kcal", "Non-Spicy", "Dairy, Egg", "Rich aroma.");
     }
 
@@ -332,7 +340,6 @@ public class BurgerAppGUI extends JFrame {
         lblChefNote.setText("⭐ Chef says: " + note);
     }
 
-    // --- OTHER METHODS ---
     private JLabel createLabel(String text) {
         JLabel l = new JLabel(text);
         l.setFont(new Font("Segoe UI", Font.BOLD, 14));
