@@ -1,0 +1,136 @@
+========== FINAL RECEIPT ==========
+ITEM #1
+>> Classic Beef Burger $5.00
+   + Pickles $0.50
+   + Mayo $0.30
+   SUBTOTAL:                          $5.80
+-----------------------------------
+ITEM #2
+>> Deluxe Chicken Royale $11.00
+   SUBTOTAL:                         $11.00
+-----------------------------------
+ITEM #3
+>> Classic Beef Burger $5.00
+   SUBTOTAL:                          $5.00
+-----------------------------------
+ITEM #4
+>> Classic Beef Burger $5.00
+   SUBTOTAL:                          $5.00
+-----------------------------------
+ITEM #5
+>> Classic Beef Burger $5.00
+   SUBTOTAL:                          $5.00
+-----------------------------------
+ITEM #6
+>> Classic Beef Burger $5.00
+   SUBTOTAL:                          $5.00
+-----------------------------------
+ITEM #7
+>> Classic Beef Burger $5.00
+   SUBTOTAL:                          $5.00
+-----------------------------------
+ITEM #8
+>> Classic Beef Burger $5.00
+   SUBTOTAL:                          $5.00
+-----------------------------------
+ITEM #9
+>> Classic Beef Burger $5.00
+   SUBTOTAL:                          $5.00
+-----------------------------------
+ITEM #10
+>> Classic Beef Burger $5.00
+   SUBTOTAL:                          $5.00
+-----------------------------------
+ITEM #11
+>> Classic Beef Burger $5.00
+   SUBTOTAL:                          $5.00
+-----------------------------------
+ITEM #12
+>> Classic Beef Burger $5.00
+   SUBTOTAL:                          $5.00
+-----------------------------------
+ITEM #13
+>> Classic Beef Burger $5.00
+   SUBTOTAL:                          $5.00
+-----------------------------------
+ITEM #14
+>> Classic Beef Burger $5.00
+   SUBTOTAL:                          $5.00
+-----------------------------------
+ITEM #15
+>> Classic Beef Burger $5.00
+   SUBTOTAL:                          $5.00
+-----------------------------------
+ITEM #16
+>> Classic Beef Burger $5.00
+   SUBTOTAL:                          $5.00
+-----------------------------------
+ITEM #17
+>> Classic Beef Burger $5.00
+   SUBTOTAL:                          $5.00
+-----------------------------------
+ITEM #18
+>> Classic Beef Burger $5.00
+   SUBTOTAL:                          $5.00
+-----------------------------------
+ITEM #19
+>> Classic Beef Burger $5.00
+   SUBTOTAL:                          $5.00
+-----------------------------------
+ITEM #20
+>> Deluxe Chicken Royale $11.00
+   SUBTOTAL:                         $11.00
+-----------------------------------
+ITEM #21
+>> Deluxe Chicken Royale $11.00
+   SUBTOTAL:                         $11.00
+-----------------------------------
+ITEM #22
+>> Deluxe Chicken Royale $11.00
+   SUBTOTAL:                         $11.00
+-----------------------------------
+ITEM #23
+>> Deluxe Chicken Royale $11.00
+   SUBTOTAL:                         $11.00
+-----------------------------------
+ITEM #24
+>> Deluxe Chicken Royale $11.00
+   SUBTOTAL:                         $11.00
+-----------------------------------
+ITEM #25
+>> Deluxe Chicken Royale $11.00
+   SUBTOTAL:                         $11.00
+-----------------------------------
+ITEM #26
+>> Deluxe Chicken Royale $11.00
+   SUBTOTAL:                         $11.00
+-----------------------------------
+ITEM #27
+>> Deluxe Chicken Royale $11.00
+   SUBTOTAL:                         $11.00
+-----------------------------------
+ITEM #28
+>> Deluxe Chicken Royale $11.00
+   SUBTOTAL:                         $11.00
+-----------------------------------
+ITEM #29
+>> Deluxe Chicken Royale $11.00
+   SUBTOTAL:                         $11.00
+-----------------------------------
+ITEM #30
+>> Deluxe Chicken Royale $11.00
+   SUBTOTAL:                         $11.00
+-----------------------------------
+ITEM #31
+>> Deluxe Chicken Royale $11.00
+   SUBTOTAL:                         $11.00
+-----------------------------------
+ITEM #32
+>> Deluxe Chicken Royale $11.00
+   SUBTOTAL:                         $11.00
+-----------------------------------
+ITEM #33
+>> Deluxe Chicken Royale $11.00
+   SUBTOTAL:                         $11.00
+-----------------------------------
+GRAND TOTAL: $255.80
